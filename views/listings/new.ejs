@@ -4,73 +4,124 @@
   <div class="col-8 offset-2">
     <h3>Create a New Listing</h3>
     <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
-      
+
       <!-- Title -->
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
-        <input name="listing[title]" 
-        placeholder="Add a catchy title" 
-        type="text" 
-        class="form-control" 
-        required 
+        <input
+          name="listing[title]"
+          id="title"
+          placeholder="Add a catchy title"
+          type="text"
+          class="form-control"
+          required
         />
+        <div class="valid-feedback">Title looks good!</div>
       </div>
-      <div class="valid-feedback">Title looks good!</div>
 
       <!-- Description -->
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea 
-        name="listing[description]" 
-         class="form-control" 
-         required
+        <textarea
+          name="listing[description]"
+          id="description"
+          class="form-control"
+          rows="4"
+          required
         ></textarea>
-         <div class="invalid-feedback">Please enter the a short description</div>
+        <div class="invalid-feedback">Please enter a short description</div>
+
+        <!-- ✅ AI Button -->
+        <button type="button" class="btn btn-outline-danger mt-2" id="aiBtn">
+          ✨ AI se Description Generate Karo
+        </button>
+        <small class="text-muted d-block mt-1">
+          Pehle Title aur Location bharo, phir click karo
+        </small>
       </div>
-      
-<div class="mb-3">
-  <label for="image" class="form-label">Image Link</label>
-  <input name="listing[image]"  type="file" class="form-control" />
-  required
- </div>
 
-
+      <!-- Image -->
+      <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input name="listing[image]" type="file" class="form-control" />
+      </div>
 
       <!-- Price + Country -->
       <div class="row">
-        <div class="md-3 col-4">
-          <label for="price" 
-          class="form-label">
-          Price</label>
-          <input name="listing[price]"
-           placeholder="1200" 
+        <div class="mb-3 col-4">
+          <label for="price" class="form-label">Price</label>
+          <input
+            name="listing[price]"
+            placeholder="1200"
             class="form-control"
-          required 
+            required
           />
-          <div class="invalid-feedback">Price should be valid !</div>
+          <div class="invalid-feedback">Price should be valid!</div>
         </div>
         <div class="mb-3 col-8">
           <label for="country" class="form-label">Country</label>
-          <input name="listing[country]" placeholder="Enter country" type="text" class="form-control"
-          required 
+          <input
+            name="listing[country]"
+            id="country"
+            placeholder="Enter country"
+            type="text"
+            class="form-control"
+            required
           />
-           <div class="invalid-feedback">Country should be valid !!</div>
+          <div class="invalid-feedback">Country should be valid!</div>
         </div>
       </div>
 
       <!-- Location -->
       <div class="mb-3">
         <label for="location" class="form-label">Location</label>
-        <input name="listing[location]" placeholder="Enter location" 
-        type="text" 
-        class="form-control" 
-        required
+        <input
+          name="listing[location]"
+          id="location"
+          placeholder="Enter location"
+          type="text"
+          class="form-control"
+          required
         />
-         <div class="invalid-feedback">Location should be valid !</div>
+        <div class="invalid-feedback">Location should be valid!</div>
       </div>
 
-      <!-- Button -->
+      <!-- Submit -->
       <button class="btn btn-dark add-btn mt-3">Add</button>
     </form>
   </div>
 </div>
+
+<!-- ✅ AI Script -->
+<script>
+  document.getElementById("aiBtn").addEventListener("click", async () => {
+    const title = document.getElementById("title").value;
+    const location = document.getElementById("location").value;
+    const country = document.getElementById("country").value;
+
+    if (!title || !location) {
+      alert("Pehle Title aur Location bharo!");
+      return;
+    }
+
+    const btn = document.getElementById("aiBtn");
+    btn.innerText = "⏳ Generating...";
+    btn.disabled = true;
+
+    try {
+      const res = await fetch("/listings/generate-description", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, location, country }),
+      });
+
+      const data = await res.json();
+      document.getElementById("description").value = data.description;
+    } catch (err) {
+      alert("Error aaya, dobara try karo!");
+    } finally {
+      btn.innerText = "✨ AI se Description Generate Karo";
+      btn.disabled = false;
+    }
+  });
+</script>

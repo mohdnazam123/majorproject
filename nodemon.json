@@ -1,0 +1,23 @@
+{
+  "watch": [
+    "app.js",
+    "controllers",
+    "routes",
+    "models",
+    "views",
+    "public",
+    "utils",
+    "init",
+    "middleware.js",
+    "schema.js",
+    "cloudConfig.js"
+  ],
+  "ignore": [
+    "node_modules/**",
+    ".git/**"
+  ],
+  "ext": "js,mjs,cjs,json,ejs,css",
+  "legacyWatch": true,
+  "pollingInterval": 100,
+  "delay": 200
+}

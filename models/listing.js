@@ -32,6 +32,11 @@ const listingSchema = new Schema({
     enum: ["Point"],
     default: "Point"   // default rakho
   },
+  category: {
+  type: String,
+  enum: ["Trending", "Rooms", "Iconic Cities", "Mountains", "Castles", "Amazing Pools", "Camping", "Farms", "Arctic", "Domes", "Boats"],
+  default: "Trending",
+},
   coordinates: {
     type: [Number],
     default: [0, 0]    // default rakho
